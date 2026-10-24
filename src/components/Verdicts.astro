@@ -1,0 +1,278 @@
+---
+import type { Copy } from "../i18n/en";
+
+interface Props {
+  copy: Copy["verdicts"];
+}
+
+const { copy } = Astro.props;
+
+const statusClass = (status: string) => {
+  if (status === "SHIP-READY") return "ship";
+  if (status === "BLOCKED") return "blocked";
+  return "skipped";
+};
+---
+
+<section class="verdicts section--paper" id="verdicts">
+  <div class="container">
+    <div class="section-head">
+      <div data-reveal>
+        <p class="kicker">{copy.kicker}</p>
+        <h2>{copy.title}</h2>
+      </div>
+      <p class="lead" data-reveal style="--reveal-delay: 80ms">
+        {copy.lead}
+      </p>
+    </div>
+
+    <div class="verdict-grid">
+      {
+        copy.cards.map((card, index) => (
+          <article
+            class:list={["verdict-card", `verdict-card--${statusClass(card.status)}`]}
+            data-reveal
+            style={`--reveal-delay: ${index * 70}ms`}
+          >
+            <div class="verdict-card__top">
+              <span class="verdict-card__status">
+                <span class="verdict-card__dot" aria-hidden="true"></span>
+                {card.status}
+              </span>
+              <span class="verdict-card__code">{card.code}</span>
+            </div>
+            <h3>{card.title}</h3>
+            <p>{card.body}</p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="verdicts__bottom">
+      <blockquote class="verdict-quote" data-reveal>
+        <span class="verdict-quote__mark" aria-hidden="true">“</span>
+        <p>{copy.quote}</p>
+      </blockquote>
+
+      <aside class="stamp" data-reveal style="--reveal-delay: 100ms">
+        <p class="stamp__label">{copy.stamp.label}</p>
+        <h3>{copy.stamp.title}</h3>
+        <p class="stamp__body">{copy.stamp.body}</p>
+        <code class="stamp__sample">{copy.stamp.sample}</code>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .verdicts {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(5rem, 9vw, 8.5rem);
+  }
+
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .verdict-card {
+    --status: var(--forest);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 20rem;
+    padding: 1.4rem;
+    overflow: hidden;
+    border: 1px solid var(--line-paper);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.42);
+    transition:
+      border-color 180ms var(--ease-out),
+      background-color 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+
+  .verdict-card::before {
+    position: absolute;
+    top: 0;
+    right: 1.4rem;
+    left: 1.4rem;
+    height: 2px;
+    content: "";
+    background: var(--status);
+    opacity: 0.8;
+  }
+
+  .verdict-card:hover {
+    border-color: var(--line-paper-strong);
+    background: rgba(255, 255, 255, 0.62);
+    transform: translateY(-2px);
+  }
+
+  .verdict-card--ship {
+    --status: var(--forest);
+  }
+
+  .verdict-card--blocked {
+    --status: #b74c35;
+  }
+
+  .verdict-card--skipped {
+    --status: #6c766e;
+  }
+
+  .verdict-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .verdict-card__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--status);
+    font-family: var(--font-mono);
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .verdict-card__dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: currentColor;
+    box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 11%, transparent);
+  }
+
+  .verdict-card__code {
+    color: var(--muted-paper);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .verdict-card h3 {
+    max-width: 15ch;
+    color: var(--paper-ink);
+    font-size: clamp(1.65rem, 2.4vw, 2.15rem);
+    line-height: 1.02;
+  }
+
+  .verdict-card p {
+    margin-top: 1rem;
+    color: var(--muted-paper);
+    font-size: 0.9rem;
+    line-height: 1.68;
+  }
+
+  .verdicts__bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: stretch;
+    margin-top: clamp(3.5rem, 7vw, 6rem);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+    border-top: 1px solid var(--line-paper-strong);
+  }
+
+  .verdict-quote {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    max-width: 32rem;
+    padding-top: 0.5rem;
+  }
+
+  .verdict-quote__mark {
+    margin-top: -0.35em;
+    color: var(--forest);
+    font-family: var(--font-display);
+    font-size: 5rem;
+    font-weight: 500;
+    line-height: 1;
+    opacity: 0.3;
+  }
+
+  .verdict-quote p {
+    color: var(--paper-ink);
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 3.7vw, 3.6rem);
+    font-variation-settings: "opsz" 60, "SOFT" 40;
+    font-weight: 450;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+  }
+
+  .stamp {
+    display: flex;
+    flex-direction: column;
+    padding: 1.4rem;
+    border: 1px solid rgba(217, 244, 122, 0.18);
+    border-radius: var(--radius-md);
+    background:
+      radial-gradient(
+        ellipse 80% 70% at 100% 0%,
+        rgba(217, 244, 122, 0.08),
+        transparent 70%
+      ),
+      var(--ink-2);
+    color: var(--paper);
+  }
+
+  .stamp__label {
+    color: var(--lime);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .stamp h3 {
+    max-width: 18ch;
+    margin-top: 1.3rem;
+    font-size: clamp(1.65rem, 2.5vw, 2.2rem);
+  }
+
+  .stamp__body {
+    margin-top: 0.9rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .stamp__sample {
+    display: block;
+    margin-top: auto;
+    padding-top: 1.5rem;
+    color: var(--moss);
+    font-size: 0.62rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 900px) {
+    .verdict-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .verdict-card {
+      min-height: 0;
+    }
+
+    .verdict-card__top {
+      margin-bottom: 2.2rem;
+    }
+
+    .verdicts__bottom {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
