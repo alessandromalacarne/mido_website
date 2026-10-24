@@ -1,0 +1,26 @@
+---
+import Hero from "../components/Hero.astro";
+import Manifesto from "../components/Manifesto.astro";
+import Ladder from "../components/Ladder.astro";
+import Verdicts from "../components/Verdicts.astro";
+import Agents from "../components/Agents.astro";
+import Install from "../components/Install.astro";
+import Closing from "../components/Closing.astro";
+import type { Copy } from "../i18n/en";
+import type { Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  copy: Copy;
+}
+
+const { locale, copy } = Astro.props;
+---
+
+<Hero locale={locale} copy={copy} />
+<Manifesto copy={copy.manifesto} />
+<Ladder copy={copy.ladder} />
+<Verdicts copy={copy.verdicts} />
+<Agents copy={copy.agents} />
+<Install copy={copy.install} />
+<Closing copy={copy.closing} />

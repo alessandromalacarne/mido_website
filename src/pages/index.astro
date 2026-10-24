@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Landing from "../components/Landing.astro";
+import { getCopy } from "../i18n";
+
+const locale = "en" as const;
+const copy = getCopy(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  title={copy.meta.title}
+  description={copy.meta.description}
+  ogAlt={copy.meta.ogAlt}
+>
+  <Landing locale={locale} copy={copy} />
+</BaseLayout>
