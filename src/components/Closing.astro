@@ -1,0 +1,157 @@
+---
+import Icon from "./Icon.astro";
+import { siteLinks } from "../lib/site";
+import type { Copy } from "../i18n/en";
+
+interface Props {
+  copy: Copy["closing"];
+}
+
+const { copy } = Astro.props;
+---
+
+<section class="closing">
+  <div class="closing__backdrop" aria-hidden="true">
+    <div class="closing__glow"></div>
+  </div>
+
+  <div class="container">
+    <div class="closing__main" data-reveal>
+      <p class="kicker">{copy.kicker}</p>
+      <h2>{copy.title}</h2>
+      <p class="closing__body">{copy.body}</p>
+
+      <div class="closing__actions">
+        <a class="button button--primary" href="#install">
+          {copy.cta}
+          <Icon name="arrow" />
+        </a>
+        <a
+          class="button button--ghost"
+          href={siteLinks.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {copy.secondary}
+          <Icon name="arrow-up-right" />
+        </a>
+      </div>
+    </div>
+
+    <blockquote class="closing__quote" data-reveal>
+      <p>{copy.quote}</p>
+      <cite>{copy.quoteBy}</cite>
+    </blockquote>
+  </div>
+</section>
+
+<style>
+  .closing {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(6rem, 12vw, 11rem) clamp(4rem, 7vw, 6rem);
+    border-top: 1px solid var(--line);
+    background: var(--ink-2);
+  }
+
+  .closing__backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .closing__glow {
+    position: absolute;
+    right: 2%;
+    bottom: -20rem;
+    width: 48rem;
+    height: 48rem;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle,
+      rgba(217, 244, 122, 0.11),
+      transparent 68%
+    );
+  }
+
+  .closing__main {
+    position: relative;
+    z-index: 1;
+    max-width: 64rem;
+  }
+
+  .closing h2 {
+    max-width: 12ch;
+    margin-top: 1.2rem;
+    color: var(--paper);
+    font-size: clamp(3.3rem, 7vw, 7rem);
+    font-variation-settings: "opsz" 120, "SOFT" 40;
+    line-height: 0.91;
+  }
+
+  .closing__body {
+    max-width: 38rem;
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.7;
+  }
+
+  .closing__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .closing__actions .button {
+    min-height: 3.1rem;
+    padding-inline: 1.35rem;
+  }
+
+  .closing__quote {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: clamp(5rem, 10vw, 9rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .closing__quote p {
+    max-width: 55rem;
+    color: var(--paper);
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.3vw, 2.1rem);
+    font-variation-settings: "opsz" 40, "SOFT" 40;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+  }
+
+  .closing__quote cite {
+    flex: none;
+    max-width: 13rem;
+    color: var(--moss);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-style: normal;
+    line-height: 1.6;
+    text-align: right;
+  }
+
+  @media (max-width: 720px) {
+    .closing__quote {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .closing__quote cite {
+      max-width: none;
+      text-align: left;
+    }
+  }
+</style>
