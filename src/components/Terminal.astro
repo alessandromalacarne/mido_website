@@ -1,0 +1,339 @@
+---
+import TreeMark from "./TreeMark.astro";
+import type { Copy } from "../i18n/en";
+
+interface Props {
+  terminal: Copy["hero"]["terminal"];
+}
+
+const { terminal } = Astro.props;
+---
+
+<figure class="terminal-wrap" data-reveal aria-label={terminal.label}>
+  <div class="terminal">
+    <div class="terminal__bar">
+      <span class="terminal__brand">
+        <span class="terminal__mark" aria-hidden="true"><TreeMark /></span>
+        <span>mido</span>
+      </span>
+      <span class="terminal__path">{terminal.path}</span>
+      <span class="terminal__live">
+        <span class="terminal__live-dot" aria-hidden="true"></span>
+        {terminal.status}
+      </span>
+    </div>
+
+    <div class="terminal__body">
+      <div class="terminal__meta">
+        <span>
+          <em>{terminal.targetLabel}</em>
+          <strong>{terminal.target}</strong>
+        </span>
+        <span>
+          <em>{terminal.revisionLabel}</em>
+          <strong>{terminal.revision}</strong>
+        </span>
+        <span>
+          <em>{terminal.measuredLabel}</em>
+          <strong>{terminal.measured}</strong>
+        </span>
+      </div>
+
+      <div class="terminal__gates">
+        {
+          terminal.gates.map((gate, index) => (
+            <div
+              class="terminal__gate"
+              style={`--delay: ${260 + index * 75}ms`}
+            >
+              <span class="terminal__index">[{index + 1}/6]</span>
+              <span class="terminal__check" aria-hidden="true">
+                ✓
+              </span>
+              <span class="terminal__gate-name">{gate.name}</span>
+              <span class="terminal__summary">{gate.summary}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="terminal__verdict">
+        <div class="terminal__verdict-main">
+          <span class="terminal__verdict-label">{terminal.verdictLabel}</span>
+          <strong>{terminal.verdict}</strong>
+        </div>
+        <span class="terminal__stamp">{terminal.stamp}</span>
+      </div>
+    </div>
+  </div>
+  <figcaption class="terminal__note">{terminal.note}</figcaption>
+</figure>
+
+<style>
+  .terminal-wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 39rem;
+    margin-left: auto;
+  }
+
+  .terminal {
+    overflow: hidden;
+    border: 1px solid rgba(217, 244, 122, 0.18);
+    border-radius: 1.15rem;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(22, 51, 34, 0.34),
+        rgba(7, 16, 12, 0.92) 34%
+      ),
+      var(--ink);
+    box-shadow: var(--shadow-terminal);
+  }
+
+  .terminal__bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.72rem 1rem;
+    border-bottom: 1px solid var(--line);
+    background: rgba(243, 240, 230, 0.025);
+  }
+
+  .terminal__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .terminal__mark {
+    display: grid;
+    width: 1rem;
+    height: 1rem;
+    color: var(--lime);
+    place-items: center;
+  }
+
+  .terminal__path {
+    justify-self: center;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.61rem;
+  }
+
+  .terminal__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-self: end;
+    color: var(--moss);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .terminal__live-dot {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 999px;
+    background: var(--lime);
+    box-shadow: 0 0 0 3px rgba(217, 244, 122, 0.1);
+  }
+
+  .terminal__body {
+    padding: 1rem 1.1rem 1.15rem;
+    background-image:
+      linear-gradient(rgba(243, 240, 230, 0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(243, 240, 230, 0.028) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .terminal__meta {
+    display: grid;
+    grid-template-columns: 1.1fr 0.8fr 1.35fr;
+    gap: 1rem;
+    padding: 0.2rem 0.25rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .terminal__meta span {
+    display: grid;
+    gap: 0.12rem;
+    min-width: 0;
+  }
+
+  .terminal__meta em {
+    color: var(--moss);
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    font-style: normal;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .terminal__meta strong {
+    overflow: hidden;
+    color: #d9e6da;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 450;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .terminal__gates {
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .terminal__gate {
+    display: grid;
+    grid-template-columns: 2.5rem 1rem 5.6rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.45rem;
+    padding: 0.28rem 0.25rem;
+    color: #b8cbbd;
+    font-family: var(--font-mono);
+    font-size: clamp(0.58rem, 1.1vw, 0.68rem);
+    opacity: 0;
+    animation: gate-in 520ms var(--ease-out) forwards;
+    animation-delay: var(--delay);
+  }
+
+  .terminal__index {
+    color: #66796d;
+  }
+
+  .terminal__check {
+    color: var(--lime);
+    font-weight: 700;
+  }
+
+  .terminal__gate-name {
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  .terminal__summary {
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .terminal__verdict {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1rem 0.25rem 0.15rem;
+  }
+
+  .terminal__verdict-main {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .terminal__verdict-label {
+    color: var(--moss);
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .terminal__verdict strong {
+    color: var(--lime);
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 2.4vw, 1.35rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+
+  .terminal__stamp {
+    max-width: 15rem;
+    color: #73867a;
+    font-family: var(--font-mono);
+    font-size: 0.53rem;
+    line-height: 1.5;
+    text-align: right;
+  }
+
+  .terminal__note {
+    margin-top: 0.8rem;
+    color: #74877b;
+    font-family: var(--font-mono);
+    font-size: 0.57rem;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+    text-align: right;
+  }
+
+  @keyframes gate-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .terminal__bar {
+      grid-template-columns: 1fr auto;
+    }
+
+    .terminal__path {
+      display: none;
+    }
+
+    .terminal__body {
+      padding: 0.8rem 0.8rem 0.95rem;
+    }
+
+    .terminal__meta {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+
+    .terminal__meta span:last-child {
+      grid-column: 1 / -1;
+    }
+
+    .terminal__gate {
+      grid-template-columns: 2.1rem 0.8rem 4.8rem minmax(0, 1fr);
+      gap: 0.35rem;
+      font-size: 0.55rem;
+    }
+
+    .terminal__verdict {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .terminal__stamp {
+      max-width: none;
+      text-align: left;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terminal__gate {
+      opacity: 1;
+      animation: none;
+    }
+  }
+</style>

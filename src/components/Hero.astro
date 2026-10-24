@@ -1,0 +1,322 @@
+---
+import Icon from "./Icon.astro";
+import Terminal from "./Terminal.astro";
+import { siteLinks } from "../lib/site";
+import type { Copy } from "../i18n/en";
+import type { Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  copy: Copy;
+}
+
+const { copy } = Astro.props;
+const hero = copy.hero;
+---
+
+<section class="hero">
+  <div class="hero__backdrop" aria-hidden="true">
+    <div class="hero__glow"></div>
+  </div>
+
+  <div class="container hero__grid">
+    <div class="hero__copy" data-reveal>
+      <div class="hero__eyebrow">
+        <span class="hero__eyebrow-mark" aria-hidden="true"></span>
+        <span>{hero.eyebrow}</span>
+        <a class="hero__version" href={siteLinks.latestRelease} target="_blank" rel="noopener noreferrer">
+          {copy.nav.version}
+        </a>
+      </div>
+
+      <h1>
+        <span class="hero__line">{hero.titleLine1}</span>
+        <span class="hero__accent">
+          {hero.titleAccent}
+          <svg viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true">
+            <path
+              d="M2 11C68 5 184 3 298 8"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </span>
+      </h1>
+
+      <p class="hero__lead">{hero.lead}</p>
+
+      <div class="hero__actions">
+        <a class="button button--primary" href="#install">
+          {hero.primaryCta}
+          <Icon name="arrow" />
+        </a>
+        <a class="button button--ghost" href="#ladder">
+          {hero.secondaryCta}
+        </a>
+      </div>
+
+      <div class="hero__proof">
+        <ul aria-label="Supported languages">
+          {
+            hero.proof.map((item) => (
+              <li>
+                <span class="hero__proof-dot" aria-hidden="true"></span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+        <span class="hero__proof-tail">{hero.proofTail}</span>
+      </div>
+    </div>
+
+    <div class="hero__visual">
+      <div class="hero__visual-glow" aria-hidden="true"></div>
+      <Terminal terminal={hero.terminal} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(4rem, 8.5vw, 8rem) clamp(4.5rem, 8vw, 7.5rem);
+    background: var(--ink);
+  }
+
+  .hero__backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .hero__glow {
+    position: absolute;
+    top: -25rem;
+    right: -12rem;
+    width: 58rem;
+    height: 58rem;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle,
+      rgba(79, 143, 94, 0.25) 0%,
+      rgba(44, 92, 62, 0.08) 42%,
+      transparent 70%
+    );
+  }
+
+  .hero__grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+    gap: clamp(3rem, 6vw, 6rem);
+    align-items: center;
+  }
+
+  .hero__copy {
+    max-width: 43rem;
+  }
+
+  .hero__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--moss-strong);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .hero__eyebrow-mark {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: var(--lime);
+    box-shadow: 0 0 0 4px rgba(217, 244, 122, 0.08);
+  }
+
+  .hero__version {
+    margin-left: 0.15rem;
+    padding: 0.18rem 0.45rem;
+    border: 1px solid rgba(217, 244, 122, 0.25);
+    border-radius: 999px;
+    color: var(--lime);
+    font-size: 0.57rem;
+    letter-spacing: 0.05em;
+    transition:
+      background-color 160ms var(--ease-out),
+      border-color 160ms var(--ease-out);
+  }
+
+  .hero__version:hover {
+    border-color: var(--lime);
+    background: rgba(217, 244, 122, 0.08);
+  }
+
+  h1 {
+    margin-top: clamp(1.4rem, 3vw, 2.1rem);
+    color: var(--paper);
+    font-size: clamp(3.15rem, 6.2vw, 6.35rem);
+    font-weight: 500;
+    letter-spacing: -0.058em;
+    line-height: 0.91;
+    text-wrap: nowrap;
+  }
+
+  .hero__line {
+    display: block;
+  }
+
+  .hero__accent {
+    position: relative;
+    display: inline-block;
+    color: var(--lime);
+    font-variation-settings: "opsz" 144, "SOFT" 60;
+  }
+
+  .hero__accent svg {
+    position: absolute;
+    right: 0.04em;
+    bottom: -0.08em;
+    width: 98%;
+    height: 0.14em;
+    color: var(--lime);
+    opacity: 0.5;
+  }
+
+  .hero__lead {
+    max-width: 42rem;
+    margin-top: clamp(1.6rem, 3vw, 2.1rem);
+    color: var(--muted);
+    font-size: clamp(1.02rem, 1.35vw, 1.16rem);
+    line-height: 1.72;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .hero__actions .button {
+    min-height: 3.15rem;
+    padding-inline: 1.4rem;
+  }
+
+  .hero__proof {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem 1.15rem;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    color: var(--moss);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.03em;
+  }
+
+  .hero__proof ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem 1.15rem;
+  }
+
+  .hero__proof li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    color: var(--paper);
+  }
+
+  .hero__proof-dot {
+    width: 0.28rem;
+    height: 0.28rem;
+    border-radius: 999px;
+    background: var(--lime);
+    opacity: 0.8;
+  }
+
+  .hero__proof-tail {
+    padding-left: 1.15rem;
+    border-left: 1px solid var(--line-strong);
+  }
+
+  .hero__visual {
+    position: relative;
+    min-width: 0;
+  }
+
+  .hero__visual-glow {
+    position: absolute;
+    inset: -12% -8% -14%;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(217, 244, 122, 0.07),
+      transparent 68%
+    );
+    filter: blur(12px);
+  }
+
+  @media (max-width: 1080px) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+    }
+
+    .hero__copy {
+      max-width: 48rem;
+    }
+
+    h1 {
+      font-size: clamp(3.6rem, 10vw, 6.2rem);
+    }
+
+    .terminal-wrap {
+      margin-inline: auto;
+    }
+
+    .terminal__note {
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 560px) {
+    h1 {
+      font-size: clamp(2.9rem, 13.5vw, 4.3rem);
+      line-height: 0.95;
+      text-wrap: balance;
+    }
+
+    .hero__accent {
+      display: inline;
+    }
+
+    .hero__accent svg {
+      display: none;
+    }
+
+    .hero__actions {
+      align-items: stretch;
+    }
+
+    .hero__actions .button {
+      flex: 1 1 auto;
+    }
+
+    .hero__proof-tail {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+</style>
