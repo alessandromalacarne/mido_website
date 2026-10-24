@@ -1,0 +1,42 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  value: string;
+  label: string;
+  copied: string;
+  failed?: string;
+  showLabel?: boolean;
+  class?: string;
+}
+
+const {
+  value,
+  label,
+  copied,
+  failed = "Copy failed",
+  showLabel = false,
+  class: className,
+} = Astro.props;
+
+const classes = ["copyable", showLabel && "copyable--label", className]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<div class={classes} data-copyable>
+  <pre><code>{value}</code></pre>
+  <button
+    class="copy-button"
+    type="button"
+    data-copy
+    data-label-copy={label}
+    data-label-copied={copied}
+    data-label-failed={failed}
+    aria-label={label}
+  >
+    <Icon name="copy" />
+    <span class="copy-button__label" data-copy-label>{label}</span>
+  </button>
+  <span class="sr-only" aria-live="polite" data-copy-status></span>
+</div>
