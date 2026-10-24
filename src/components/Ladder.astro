@@ -1,0 +1,353 @@
+---
+import type { Copy } from "../i18n/en";
+
+interface Props {
+  copy: Copy["ladder"];
+}
+
+const { copy } = Astro.props;
+---
+
+<section class="ladder section--forest" id="ladder">
+  <div class="container">
+    <div class="section-head">
+      <div data-reveal>
+        <p class="kicker">{copy.kicker}</p>
+        <h2>{copy.title}</h2>
+      </div>
+      <p class="lead" data-reveal style="--reveal-delay: 80ms">
+        {copy.lead}
+      </p>
+    </div>
+
+    <div class="ladder__legend" data-reveal>
+      <span class="ladder__order">
+        <span class="ladder__order-dot" aria-hidden="true"></span>
+        {copy.order}
+      </span>
+      <span>{copy.scope}</span>
+    </div>
+
+    <ol class="ladder__list">
+      {
+        copy.gates.map((gate, index) => (
+          <li
+            class="gate"
+            data-reveal
+            style={`--reveal-delay: ${index * 55}ms`}
+          >
+            <span class="gate__number">{gate.number}</span>
+            <div class="gate__title">
+              <h3>{gate.name}</h3>
+              <p>{gate.question}</p>
+            </div>
+            <p class="gate__body">{gate.body}</p>
+            <div class="gate__spec">
+              <span class="gate__threshold">{gate.threshold}</span>
+              <span class="gate__tools">{gate.tools}</span>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="languages">
+      <div class="languages__head">
+        <div data-reveal>
+          <p class="kicker">{copy.languages.kicker}</p>
+          <h3>{copy.languages.title}</h3>
+        </div>
+        <p data-reveal style="--reveal-delay: 80ms">
+          {copy.languages.body}
+        </p>
+      </div>
+
+      <div class="languages__grid">
+        {
+          copy.languages.cards.map((card, index) => (
+            <article
+              class="language-card"
+              data-reveal
+              style={`--reveal-delay: ${index * 70}ms`}
+            >
+              <div class="language-card__top">
+                <h4>{card.name}</h4>
+                <span>{card.marker}</span>
+              </div>
+              <p>{card.tools}</p>
+            </article>
+          ))
+        }
+      </div>
+
+      <p class="languages__note" data-reveal>{copy.languages.note}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ladder {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(5rem, 9vw, 8.5rem);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ladder__legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem 1.5rem;
+    margin-bottom: 0.9rem;
+    color: var(--moss);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .ladder__order {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--lime);
+  }
+
+  .ladder__order-dot {
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: currentColor;
+  }
+
+  .ladder__list {
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .gate {
+    display: grid;
+    grid-template-columns:
+      2.2rem minmax(11rem, 0.82fr) minmax(0, 1.28fr)
+      minmax(13rem, 0.72fr);
+    gap: clamp(1.2rem, 3vw, 3rem);
+    align-items: start;
+    padding: 1.7rem 0.55rem;
+    border-bottom: 1px solid var(--line);
+    transition: background-color 180ms var(--ease-out);
+  }
+
+  .gate:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(217, 244, 122, 0.035),
+      transparent 72%
+    );
+  }
+
+  .gate__number {
+    padding-top: 0.1rem;
+    color: #667c6e;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+  }
+
+  .gate__title h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--lime);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .gate__title h3::before {
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 999px;
+    content: "";
+    background: currentColor;
+    opacity: 0.8;
+  }
+
+  .gate__title p {
+    margin-top: 0.55rem;
+    color: var(--paper);
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+    font-variation-settings: "opsz" 32, "SOFT" 20;
+    font-weight: 450;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .gate__body {
+    padding-top: 0.1rem;
+    color: var(--muted);
+    font-size: 0.91rem;
+    line-height: 1.68;
+  }
+
+  .gate__spec {
+    display: grid;
+    gap: 0.55rem;
+    padding-top: 0.1rem;
+  }
+
+  .gate__threshold {
+    color: var(--lime);
+    font-family: var(--font-mono);
+    font-size: 0.61rem;
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+  }
+
+  .gate__tools {
+    color: #72877a;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+  }
+
+  .languages {
+    margin-top: clamp(5rem, 9vw, 8rem);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .languages__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+  }
+
+  .languages__head h3 {
+    max-width: 16ch;
+    margin-top: 1rem;
+    color: var(--paper);
+    font-size: clamp(2.1rem, 3.7vw, 3.5rem);
+  }
+
+  .languages__head > p {
+    max-width: 43ch;
+    padding-bottom: 0.2rem;
+    color: var(--muted);
+    font-size: 0.97rem;
+    line-height: 1.7;
+  }
+
+  .languages__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin-top: 2.2rem;
+  }
+
+  .language-card {
+    display: grid;
+    gap: 1.5rem;
+    min-height: 10.5rem;
+    padding: 1.35rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: rgba(243, 240, 230, 0.025);
+    transition:
+      border-color 180ms var(--ease-out),
+      background-color 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+
+  .language-card:hover {
+    border-color: rgba(217, 244, 122, 0.3);
+    background: rgba(217, 244, 122, 0.035);
+    transform: translateY(-2px);
+  }
+
+  .language-card__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+
+  .language-card h4 {
+    color: var(--paper);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+  }
+
+  .language-card__top span {
+    color: var(--moss);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.02em;
+  }
+
+  .language-card p {
+    align-self: end;
+    color: #7f9487;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    line-height: 1.7;
+  }
+
+  .languages__note {
+    margin-top: 1.1rem;
+    color: #72877a;
+    font-family: var(--font-mono);
+    font-size: 0.59rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1000px) {
+    .gate {
+      grid-template-columns: 2rem minmax(10rem, 0.9fr) minmax(0, 1.1fr);
+    }
+
+    .gate__spec {
+      grid-column: 2 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.25rem;
+      padding-top: 0.3rem;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .gate {
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: 0.8rem 1rem;
+      padding-block: 1.5rem;
+    }
+
+    .gate__body {
+      grid-column: 2;
+    }
+
+    .gate__spec {
+      grid-column: 2;
+    }
+
+    .languages__head {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    .languages__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .language-card {
+      min-height: 0;
+    }
+  }
+</style>
