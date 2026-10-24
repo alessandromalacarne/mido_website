@@ -30,14 +30,15 @@ const { copy } = Astro.props;
           <span>v{version}</span>
         </div>
 
-        <Copyable
-          value={copy.command}
-          label={copy.copy}
-          copied={copy.copied}
-          failed={copy.copyFailed}
-          showLabel
-          class="install__copy"
-        />
+        <div class="install__copy">
+          <Copyable
+            value={copy.command}
+            label={copy.copy}
+            copied={copy.copied}
+            failed={copy.copyFailed}
+            showLabel
+          />
+        </div>
 
         <div class="install__alts">
           <p class="install__alts-label">{copy.altLabel}</p>
