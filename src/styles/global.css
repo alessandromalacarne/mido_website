@@ -1,4 +1,4 @@
-@import "@fontsource-variable/fraunces/standard.css";
+@import "@fontsource/instrument-serif/400.css";
 @import "@fontsource-variable/manrope/wght.css";
 @import "@fontsource-variable/jetbrains-mono/wght.css";
 
@@ -25,7 +25,7 @@
   --line-strong: rgba(243, 240, 230, 0.24);
   --line-paper: rgba(18, 35, 26, 0.16);
   --line-paper-strong: rgba(18, 35, 26, 0.3);
-  --font-display: "Fraunces Variable", "Iowan Old Style", "Palatino Linotype",
+  --font-display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype",
     Palatino, Georgia, serif;
   --font-body: "Manrope Variable", "Avenir Next", Avenir, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono Variable", "SFMono-Regular", Consolas,
@@ -93,19 +93,14 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.035em;
   line-height: 0.98;
   text-wrap: balance;
 }
 
-h1 {
-  font-variation-settings: "opsz" 120, "SOFT" 30;
-}
-
 h2 {
   font-size: clamp(2.5rem, 4.8vw, 4.7rem);
-  font-variation-settings: "opsz" 80, "SOFT" 20;
 }
 
 h3 {
