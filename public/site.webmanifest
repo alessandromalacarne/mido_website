@@ -1,0 +1,22 @@
+{
+  "name": "mido — Make green mean something",
+  "short_name": "mido",
+  "description": "The guardrail runner for AI-built software. Six verification gates, one verdict bound to the revision it measured.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07100c",
+  "theme_color": "#07100c",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
