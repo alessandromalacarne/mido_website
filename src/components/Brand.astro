@@ -1,0 +1,55 @@
+---
+import TreeMark from "./TreeMark.astro";
+import { localePath, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+  label: string;
+  class?: string;
+}
+
+const { locale, label, class: className } = Astro.props;
+const classes = ["brand", className].filter(Boolean).join(" ");
+---
+
+<a class={classes} href={localePath(locale)} aria-label={label}>
+  <span class="brand__mark" aria-hidden="true">
+    <TreeMark />
+  </span>
+  <span class="brand__word">mido</span>
+</a>
+
+<style>
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: inherit;
+    line-height: 1;
+    transition: color 180ms var(--ease-out);
+  }
+
+  .brand:hover {
+    color: var(--lime);
+  }
+
+  .brand__mark {
+    display: grid;
+    width: 1.7rem;
+    height: 1.7rem;
+    place-items: center;
+    color: var(--lime);
+  }
+
+  .brand__word {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-variation-settings: "opsz" 28, "SOFT" 20;
+    font-weight: 560;
+    letter-spacing: -0.045em;
+  }
+
+  .brand:hover .brand__mark {
+    color: currentColor;
+  }
+</style>

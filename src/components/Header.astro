@@ -1,0 +1,372 @@
+---
+import Brand from "./Brand.astro";
+import Icon from "./Icon.astro";
+import { localePath, type Locale } from "../i18n";
+import type { Copy } from "../i18n/en";
+import { siteLinks } from "../lib/site";
+
+interface Props {
+  locale: Locale;
+  copy: Copy;
+}
+
+const { locale, copy } = Astro.props;
+const nav = copy.nav;
+---
+
+<header class="site-header" data-site-header>
+  <div class="container site-header__inner">
+    <Brand locale={locale} label={nav.home} />
+
+    <nav class="desktop-nav" aria-label={copy.a11y.primaryNav}>
+      <a href="#why">{nav.why}</a>
+      <a href="#ladder">{nav.ladder}</a>
+      <a href="#verdicts">{nav.verdicts}</a>
+      <a href="#agents">{nav.agents}</a>
+      <a
+        class="desktop-nav__docs"
+        href={siteLinks.wiki}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {nav.docs}
+        <Icon name="arrow-up-right" />
+      </a>
+    </nav>
+
+    <div class="site-header__actions">
+      <div
+        class="lang-switch lang-switch--desktop"
+        role="group"
+        aria-label={copy.a11y.languageSwitcher}
+      >
+        <a
+          href={localePath("en")}
+          hreflang="en"
+          lang="en"
+          class:list={{ active: locale === "en" }}
+          aria-label={nav.switchToEnglish}
+          aria-current={locale === "en" ? "page" : undefined}>EN</a
+        >
+        <span aria-hidden="true">/</span>
+        <a
+          href={localePath("pt")}
+          hreflang="pt-BR"
+          lang="pt-BR"
+          class:list={{ active: locale === "pt" }}
+          aria-label={nav.switchToPortuguese}
+          aria-current={locale === "pt" ? "page" : undefined}>PT</a
+        >
+      </div>
+
+      <a
+        class="header-github"
+        href={siteLinks.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={nav.github}
+      >
+        <Icon name="github" />
+      </a>
+
+      <a class="button button--primary header-install" href="#install">
+        {nav.install}
+        <Icon name="arrow" />
+      </a>
+
+      <button
+        class="menu-toggle"
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="mobile-navigation"
+        aria-label={copy.a11y.openMenu}
+        data-label-open={copy.a11y.openMenu}
+        data-label-close={copy.a11y.closeMenu}
+      >
+        <Icon name="menu" class="menu-toggle__open" />
+        <Icon name="close" class="menu-toggle__close" />
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-navigation" data-mobile-nav hidden>
+    <nav aria-label={copy.a11y.primaryNav}>
+      <a href="#why">{nav.why}</a>
+      <a href="#ladder">{nav.ladder}</a>
+      <a href="#verdicts">{nav.verdicts}</a>
+      <a href="#agents">{nav.agents}</a>
+      <a href="#install">{nav.install}</a>
+      <a href={siteLinks.wiki} target="_blank" rel="noopener noreferrer">
+        {nav.docs}
+        <Icon name="arrow-up-right" />
+      </a>
+    </nav>
+    <div class="mobile-nav__footer">
+      <div
+        class="lang-switch"
+        role="group"
+        aria-label={copy.a11y.languageSwitcher}
+      >
+        <a
+          href={localePath("en")}
+          hreflang="en"
+          lang="en"
+          class:list={{ active: locale === "en" }}
+          aria-label={nav.switchToEnglish}
+          aria-current={locale === "en" ? "page" : undefined}>English</a
+        >
+        <a
+          href={localePath("pt")}
+          hreflang="pt-BR"
+          lang="pt-BR"
+          class:list={{ active: locale === "pt" }}
+          aria-label={nav.switchToPortuguese}
+          aria-current={locale === "pt" ? "page" : undefined}>Português</a
+        >
+      </div>
+      <a
+        class="mobile-nav__github"
+        href={siteLinks.github}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Icon name="github" />
+        {nav.github}
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid transparent;
+    background: rgba(7, 16, 12, 0.55);
+    transition:
+      background-color 220ms var(--ease-out),
+      border-color 220ms var(--ease-out),
+      backdrop-filter 220ms var(--ease-out);
+  }
+
+  .site-header.is-scrolled {
+    border-bottom-color: var(--line);
+    background: rgba(7, 16, 12, 0.86);
+    backdrop-filter: blur(18px);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 4.5rem;
+  }
+
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.2vw, 2rem);
+    margin-inline: auto;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .desktop-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    transition: color 160ms var(--ease-out);
+  }
+
+  .desktop-nav a:hover {
+    color: var(--paper);
+  }
+
+  .desktop-nav__docs .icon {
+    width: 0.8rem;
+    height: 0.8rem;
+    opacity: 0.65;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-left: auto;
+  }
+
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.63rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  .lang-switch a {
+    padding-block: 0.2rem;
+    transition: color 160ms var(--ease-out);
+  }
+
+  .lang-switch a:hover,
+  .lang-switch a.active {
+    color: var(--paper);
+  }
+
+  .lang-switch a.active {
+    text-decoration: underline;
+    text-decoration-color: var(--lime);
+    text-underline-offset: 0.35em;
+  }
+
+  .header-github {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    color: var(--muted);
+    transition:
+      color 160ms var(--ease-out),
+      transform 160ms var(--ease-out);
+  }
+
+  .header-github:hover {
+    color: var(--paper);
+    transform: translateY(-1px);
+  }
+
+  .header-github .icon {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .header-install {
+    min-height: 2.5rem;
+    padding: 0.55rem 1rem;
+    font-size: 0.78rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: transparent;
+    place-items: center;
+    color: var(--paper);
+    cursor: pointer;
+  }
+
+  .menu-toggle .icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .menu-toggle__close {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-toggle__open {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-toggle__close {
+    display: block;
+  }
+
+  .mobile-nav {
+    border-top: 1px solid var(--line);
+    background: var(--ink);
+  }
+
+  .mobile-nav nav {
+    display: grid;
+    width: min(100% - (var(--gutter) * 2), var(--max-width));
+    margin-inline: auto;
+    padding-block: 1.5rem;
+  }
+
+  .mobile-nav nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    letter-spacing: -0.025em;
+  }
+
+  .mobile-nav nav a .icon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--moss);
+  }
+
+  .mobile-nav__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: min(100% - (var(--gutter) * 2), var(--max-width));
+    margin-inline: auto;
+    padding-block: 1rem 1.4rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+
+  .mobile-nav__footer .lang-switch {
+    gap: 1rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+  }
+
+  .mobile-nav__github {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .mobile-nav__github .icon {
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+
+  @media (max-width: 960px) {
+    .desktop-nav {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: grid;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header-github,
+    .header-install {
+      display: none;
+    }
+
+    .lang-switch--desktop {
+      display: none;
+    }
+  }
+
+  @media (min-width: 961px) {
+    .mobile-nav {
+      display: none !important;
+    }
+  }
+</style>

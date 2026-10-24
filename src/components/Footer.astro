@@ -1,0 +1,326 @@
+---
+import Brand from "./Brand.astro";
+import Icon from "./Icon.astro";
+import { localePath, type Locale } from "../i18n";
+import type { Copy } from "../i18n/en";
+import { siteLinks, version } from "../lib/site";
+
+interface Props {
+  locale: Locale;
+  copy: Copy;
+}
+
+const { locale, copy } = Astro.props;
+const footer = copy.footer;
+const year = new Date().getFullYear();
+
+const groups = [
+  {
+    title: footer.product,
+    links: [
+      { label: footer.links.why, href: "#why", external: false },
+      { label: footer.links.ladder, href: "#ladder", external: false },
+      { label: footer.links.verdicts, href: "#verdicts", external: false },
+      { label: footer.links.agents, href: "#agents", external: false },
+      { label: footer.links.install, href: "#install", external: false },
+    ],
+  },
+  {
+    title: footer.resources,
+    links: [
+      { label: footer.links.docs, href: siteLinks.wiki, external: true },
+      { label: footer.links.mcp, href: siteLinks.wiki, external: true },
+      { label: footer.links.releases, href: siteLinks.releases, external: true },
+      { label: footer.links.changelog, href: siteLinks.changelog, external: true },
+    ],
+  },
+  {
+    title: footer.project,
+    links: [
+      { label: footer.links.github, href: siteLinks.github, external: true },
+      { label: footer.links.license, href: siteLinks.license, external: true },
+      { label: footer.links.wiki, href: siteLinks.wiki, external: true },
+    ],
+  },
+];
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__identity">
+        <Brand locale={locale} label={copy.nav.home} class="footer__brand" />
+        <p>{footer.tagline}</p>
+      </div>
+
+      <div class="footer__aside">
+        <a
+          class="footer__version"
+          href={siteLinks.latestRelease}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          v{version}
+          <Icon name="arrow-up-right" />
+        </a>
+
+        <div
+          class="footer__lang"
+          role="group"
+          aria-label={copy.a11y.languageSwitcher}
+        >
+          <span>{footer.language}</span>
+          <a
+            href={localePath("en")}
+            hreflang="en"
+            lang="en"
+            class:list={{ active: locale === "en" }}
+            aria-current={locale === "en" ? "page" : undefined}
+          >
+            {footer.english}
+          </a>
+          <a
+            href={localePath("pt")}
+            hreflang="pt-BR"
+            lang="pt-BR"
+            class:list={{ active: locale === "pt" }}
+            aria-current={locale === "pt" ? "page" : undefined}
+          >
+            {footer.portuguese}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__columns">
+      {
+        groups.map((group) => (
+          <nav class="footer__group" aria-label={group.title}>
+            <p>{group.title}</p>
+            <ul>
+              {group.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+
+    <div class="footer__bottom">
+      <span>© {year} mido</span>
+      <span>{footer.built}</span>
+      <span>{footer.rights}</span>
+      <a class="footer__top-link" href="#top">
+        {footer.backToTop}
+        <Icon name="arrow-up" />
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 6vw, 5.5rem) 1.5rem;
+    border-top: 1px solid var(--line);
+    background:
+      radial-gradient(
+        ellipse 60% 100% at 100% 100%,
+        rgba(79, 143, 94, 0.1),
+        transparent 70%
+      ),
+      var(--ink);
+  }
+
+  .footer__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .footer__identity {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .footer__identity :global(.footer__brand .brand__word) {
+    font-size: 1.8rem;
+  }
+
+  .footer__identity p {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .footer__aside {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+  }
+
+  .footer__version {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--moss);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.04em;
+    transition:
+      border-color 160ms var(--ease-out),
+      color 160ms var(--ease-out);
+  }
+
+  .footer__version:hover {
+    border-color: var(--moss);
+    color: var(--paper);
+  }
+
+  .footer__version .icon {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .footer__lang {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--muted);
+    font-size: 0.68rem;
+  }
+
+  .footer__lang > span {
+    color: #6e8275;
+    font-family: var(--font-mono);
+    font-size: 0.57rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .footer__lang a {
+    transition: color 160ms var(--ease-out);
+  }
+
+  .footer__lang a:hover,
+  .footer__lang a.active {
+    color: var(--paper);
+  }
+
+  .footer__lang a.active {
+    text-decoration: underline;
+    text-decoration-color: var(--lime);
+    text-underline-offset: 0.3em;
+  }
+
+  .footer__columns {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 2rem;
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .footer__group p {
+    color: #718578;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer__group ul {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 1rem;
+  }
+
+  .footer__group a {
+    color: var(--muted);
+    font-size: 0.8rem;
+    transition: color 160ms var(--ease-out);
+  }
+
+  .footer__group a:hover {
+    color: var(--lime);
+  }
+
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--line);
+    color: #6d8174;
+    font-family: var(--font-mono);
+    font-size: 0.57rem;
+    line-height: 1.6;
+  }
+
+  .footer__top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-left: auto;
+    color: var(--moss);
+    transition: color 160ms var(--ease-out);
+  }
+
+  .footer__top-link:hover {
+    color: var(--lime);
+  }
+
+  .footer__top-link .icon {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
+  @media (max-width: 760px) {
+    .footer__top {
+      display: grid;
+    }
+
+    .footer__aside {
+      justify-content: flex-start;
+    }
+
+    .footer__columns {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer__group:first-child {
+      grid-column: 1 / -1;
+    }
+
+    .footer__top-link {
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .footer__columns {
+      grid-template-columns: 1fr;
+    }
+
+    .footer__group:first-child {
+      grid-column: auto;
+    }
+  }
+</style>
